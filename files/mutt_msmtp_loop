@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Starting mutt via mutt_msmtp_loop provides (in combination with
+# mutt_msmtp_break) mutt with a crude password prompt for msmtp. Notice
+# that this script temporarily stores the entered password in
+# /tmp/mutt_pw -- which ideally should be quickly deleted by the other
+# script. Probably not a very secure solution, but it beats having to
+# store the password in a config file on the hard disk.
+
+set -m                              # Enable job control.
+
+umask 166                           # Set restrictive umask for pw file
+
+mutt -y -n -F ~/.config/mutt/muttrc # Start mutt with proper rc file.
+
+while [[ 1 ]]                       # Loop runs as long as mutt is not
+do                                  # properly ended but only suspended
+  jobs=`jobs | wc -l`               # into the background by
+  if [[ $jobs == 0 ]]               # mutt_msmtp_break.
+  then                              # 
+    exit                            # 
+  fi
+
+  clear                             # Password prompt:
+  stty -F `tty` -echo               # Read in password invisibly by 
+  echo 'Password:'                  # unsetting input character
+  read -r pw                        # echoing via stty.
+  stty -F `tty` echo 
+
+  rm -f /tmp/mutt_pw                # After password is written into
+  echo $pw > /tmp/mutt_pw           # temporary file, foreground mutt
+  fg                                # again.
+done

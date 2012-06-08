@@ -1,0 +1,55 @@
+# plomlompom's i3 status bar configuration
+
+# Activate colors; set update interval of one second.
+general {
+        colors = true
+        interval = 1
+}
+
+# Selection / order of status elements.
+order += "disk /"
+order += "wireless wlan0"
+order += "ethernet eth0"
+order += "battery 0"
+order += "cpu_temperature 0"
+order += "load"
+order += "time"
+
+# How much space is left in / ?
+disk "/" {
+    format = "%free"
+}
+
+# WLAN status: show IP and connection quality or "down".
+wireless wlan0 {
+        format_up = "W: (%quality at %essid) %ip"
+        format_down = "W: down"
+}
+
+# Ethernet status: show IP or "down".
+ethernet eth0 {
+        format_up = "E: %ip"
+        format_down = "E: down"
+}
+
+# Battery status: show FULL/CHARGING/BATTERY, storage, time left.
+battery 0 {
+        format = "%status %percentage %remaining"
+}
+
+# Show CPU temperature in degrees of celsius.
+cpu_temperature 0 {
+        format = "T: %degrees °C"
+}
+
+# Show system load during last 1/5/15 minutes.
+load {
+    format = "L: %1min %5min %15min"
+}
+
+# Show date/time/timezone as "year-month-day hour:minute:second
+# timezone_numeric/timezone_alphabetic".
+time {
+
+    format = "%Y-%m-%d %H:%M:%S %z/%Z"
+}

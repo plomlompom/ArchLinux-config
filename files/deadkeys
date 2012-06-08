@@ -1,0 +1,3 @@
+#!/bin/sh
+# Activate dead keys for X session.
+setxkbmap -variant ""

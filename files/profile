@@ -1,0 +1,15 @@
+# plomlompom's ~/.profile
+
+# Environment variables.
+export PATH=~/.bin:$PATH
+export EDITOR=nano
+
+# Fancy colors for ls.
+alias ls="ls --color=auto"
+
+# Force these programs to use re-located config files. Notice that
+# msmtp does not understand ~ as the home dir, only $HOME.
+alias irssi="irssi --home ~/.config/irssi"
+alias getmail="getmail --getmaildir=~/.config/getmail"
+alias msmtp="msmtp --file=$HOME/.config/msmtp/msmtprc"
+alias mutt="mutt_msmtp_loop"

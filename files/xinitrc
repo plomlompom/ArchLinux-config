@@ -1,0 +1,7 @@
+# plomlompom's X init configuration.
+
+# Start with no dead keys.
+setxkbmap -variant "nodeadkeys"
+
+# Launch i3 window manager.
+i3

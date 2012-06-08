@@ -1,0 +1,37 @@
+# plomlompom's mutt configuration file
+
+# Define mailboxes.
+set mbox_type=Maildir
+set folder=~/.mail
+set spoolfile=$folder/inbox
+set mbox=$folder/archive
+set record=$folder/sent
+set postponed=$folder/postponed
+
+# Move read messages from $spoolfile to $mbox.
+set move=yes
+
+# Macro to a mailboxes view built from all folders below ~/mail.
+macro index,pager y <change-folder>?<toggle-mailboxes>
+mailboxes `ls ~/.mail | sed -e 's/^/=/' | tr "\n" " "`
+
+# What goes into the default header display.
+ignore *
+unignore from: subject to cc date
+
+# Force some variables for From: and Message-ID: generation.
+set realname="Christian Heller"
+set from="c.heller@plomlompom.de"
+set hostname="plomlompom.de"
+
+# Allow me to reply myself.
+set reply_self = yes
+
+# Only scroll in the current message, not across messages.
+set pager_stop = yes
+
+# Use msmtp for SMTP stuff, with password prompt hack via passwordeval.
+set sendmail="/usr/bin/msmtp --file=$HOME/.config/msmtp/msmtprc --passwordeval=~/.config/mutt/mutt_msmtp_break"
+
+# Sort message top-down new-old.
+set sort=reverse-date

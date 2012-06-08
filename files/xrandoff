@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# plomlompom's script for turning off his at-home multi-monitor setup
+
+xrandr --output LVDS1 --mode 1024x600 --pos 0x0 --output VGA1 --off

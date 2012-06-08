@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# plomlompom's script for turning on his at-home multi-monitor setup.
+#
+# Since the "1360x768" resolution possible with my television set is
+# detected automatically, I have to add it manually to xrandr via
+# --newmode / --addmode. The values for "--newmode" were originally
+# calculated via the "cvt" tool.
+
+xrandr --newmode "1360x768" 84.75 1360 1432 1568 1776 768 771 781 798 -hsync +vsync
+xrandr --addmode VGA1 "1360x768"
+xrandr --output LVDS1 --mode 1024x600 --pos 0x768 --output VGA1 --mode 1360x768 --pos 0x0

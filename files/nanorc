@@ -1,0 +1,30 @@
+# plomlompom's configuration file for the "nano" editor.
+
+# Backup every file being changed. User must create "backupdir", for if
+# it is not found, backup files get cluttered wherever nano feels like.
+set backup
+set backupdir ~/.nano_backups
+
+# Constantly show cursor's line and column number.
+set const
+
+# Remove blank line and help display to grow screen estate.
+set morespace
+set nohelp
+
+# Don't start a new line when the right side of screen is reached. Use
+# "softwrap" instead to break lines only in display, not in file.
+set nowrap
+
+# Scroll line by line, not half-screen by half-screen.
+set smooth
+
+# Writing a tab only creates a sequence of single-space whitespaces.
+set tabstospaces
+
+# Activate "experimental" undo, which seems to work just fine.
+set undo
+
+# Some key bindings: move cursor left/right one word with CTRL+a/d.
+bind ^a prevword main
+bind ^d nextword main

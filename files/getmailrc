@@ -1,0 +1,17 @@
+# plomlompom's getmail configuration
+
+# Where and how to get mail from.
+[retriever]
+type = SimplePOP3SSLRetriever
+server = mail.klostein.com
+username = c.heller@plomlompom.de
+
+# Let procmail take charge of incoming mail. Use user-defined rc file.
+[destination]
+type = MDA_external
+path = /usr/bin/procmail
+arguments = ("-m", "/home/plom/.config/procmail/procmailrc")
+
+# Don't retrieve mail already known to getmail.
+[options]
+read_all = false

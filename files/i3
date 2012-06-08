@@ -1,0 +1,74 @@
+# plomlompom's i3-wm configuration
+
+# Font for i3 text
+font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+
+# Force "tabbed" as default layout for new windows.
+workspace_layout              tabbed
+
+# Make the Windows key the modifier key for all i3-wm actions.
+set                           $mod Mod4
+floating_modifier             $mod
+
+# Launch xterm small-font white-on-black or big-font black-on-white. 
+bindsym $mod+Return           exec xterm -ls -r
+bindsym $mod+Shift+Return     exec xterm -ls -fn 10x20
+
+# Launch programs via dmenu.
+bindsym $mod+d                exec dmenu_run
+
+# Kill window.
+bindsym $mod+Shift+Q          kill
+
+# Move focus between windows.
+bindsym $mod+Left             focus left
+bindsym $mod+Down             focus down
+bindsym $mod+Up               focus up
+bindsym $mod+Right            focus right
+
+# Move windows.
+bindsym $mod+Shift+Left       move left
+bindsym $mod+Shift+Down       move down
+bindsym $mod+Shift+Up         move up
+bindsym $mod+Shift+Right      move right
+
+# Toggle fullscreen for focused window.
+bindsym $mod+f                fullscreen
+
+# Toggle floating of window, focus on floating or tabbed windows.
+bindsym $mod+Shift+space      floating toggle
+bindsym $mod+space            focus mode_toggle
+
+# Switch to workspace x.
+bindsym $mod+1                workspace 1
+bindsym $mod+2                workspace 2
+bindsym $mod+3                workspace 3
+bindsym $mod+4                workspace 4
+bindsym $mod+5                workspace 5
+bindsym $mod+6                workspace 6
+bindsym $mod+7                workspace 7
+bindsym $mod+8                workspace 8
+bindsym $mod+9                workspace 9
+bindsym $mod+0                workspace 10
+
+# Move window to workspace x.
+bindsym $mod+Shift+exclam     move workspace 1
+bindsym $mod+Shift+quotedbl   move workspace 2
+bindsym $mod+Shift+section    move workspace 3
+bindsym $mod+Shift+dollar     move workspace 4
+bindsym $mod+Shift+percent    move workspace 5
+bindsym $mod+Shift+ampersand  move workspace 6
+bindsym $mod+Shift+slash      move workspace 7
+bindsym $mod+Shift+parenleft  move workspace 8
+bindsym $mod+Shift+parenright move workspace 9
+bindsym $mod+Shift+equal      move workspace 10
+
+# Reload i3 config file, restart (keeping sesion) i3, exit i3.
+bindsym $mod+Shift+C          reload
+bindsym $mod+Shift+R          restart
+bindsym $mod+Shift+P          exit
+
+# Select "i3status" as i3 status bar.
+bar {
+        status_command            i3status
+}

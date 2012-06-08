@@ -1,0 +1,174 @@
+# System constants
+# ----------------
+set config_dir     = @(echo $HOME)@/.config/uzbl
+set shell_cmd      = sh -c 
+set fifo_dir       = /tmp
+set stylesheet_uri = file://@config_dir/style.css
+
+set download_handler = sync_spawn @config_dir/download.sh
+
+# Defaults
+# --------
+
+# Mode to default back to.
+set default_mode = command
+
+# Start without javascript (except uzbl's own).
+set enable_scripts = 0
+
+# Start with zoom-everything instead of zoom-text-only.
+set zoom_type = 1
+
+# Mode config
+# -----------
+
+# Forward keys to website only in insert mode.
+request MODE_CONFIG command forward_keys  = 0
+request MODE_CONFIG insert  forward_keys  = 1
+
+# Don't update keycmd during insert mode.
+request MODE_CONFIG command keycmd_events = 1
+request MODE_CONFIG insert  keycmd_events = 0
+
+# Appearance
+# ----------
+
+# Show black status bar at bottom.
+set status_top        = 0
+set status_background = #222
+
+# Command mode indicator:
+request MODE_CONFIG command mode_indicator = c
+request MODE_CONFIG insert  mode_indicator = i
+request MODE_CONFIG stack   mode_indicator = 
+
+# Mark text cursor by underline.
+set cursor_style = underline = "single"
+
+# Content of status bar.
+set progress.format = %c
+set status_page_id  = \@[\@uri]\@ <span foreground="#999">\@TITLE</span>
+set status_input    = <span foreground="#ff0">\@mode_indicator\@keycmd_prompt \@keycmd</span>
+set content         = \@status_js @status_input \@status_progress @status_page_id
+set status_format   = <span font_size="medium" font_family="monospace" foreground="#fff">@content</span>
+
+# Window title.
+set title_format_short = \@uri
+set title_format_long  = \@uri
+
+# User agent string, identifies as uzbl.
+set useragent = uzbl (Webkit @{WEBKIT_MAJOR}.@{WEBKIT_MINOR}) (@(+uname -sm)@ [@ARCH_UZBL])
+
+# Events
+# ------
+
+# On ESCAPE: revert to default_mode, clear KEYCMD buffer and follow.js hints.
+request ON_EVENT ESCAPE set mode = command
+request ON_EVENT ESCAPE event KEYCMD_CLEAR
+request ON_EVENT ESCAPE js uzbl.follow.clearHints()
+
+# Return to command mode for each new page load.
+request ON_EVENT LOAD_START set mode = command
+
+# On LOAD_COMMIT: run javascripts.
+request ON_EVENT LOAD_COMMIT js uzbl = {};
+request ON_EVENT LOAD_COMMIT script @config_dir/follow.js
+
+# On NEW_WINDOW: open new uzbl.
+request ON_EVENT NEW_WINDOW sh 'uzbl-browser ${1:+-u "$1"}' %r
+
+# Page load status message.
+request ON_EVENT LOAD_START  set status_progress = <span foreground="#070">\@progress.output</span>
+request ON_EVENT LOAD_COMMIT set status_progress = <span foreground="#0b0">\@progress.output</span>
+request ON_EVENT LOAD_FINISH set status_progress = <span foreground="#0f0">\@progress.output</span>
+
+# Java script status message.
+request ON_EVENT TOGGLE_JS  toggle enable_scripts
+request ON_EVENT LOAD_START spawn @config_dir/js_status.sh \@enable_scripts
+request ON_EVENT TOGGLE_JS  spawn @config_dir/js_status.sh \@enable_scripts
+
+# follow.js
+# ---------
+
+set follow_hints = 0123456789
+set follow       = spawn @config_dir/follow.sh \@< uzbl.follow("\@follow_hints", "%s", 'click') >\@
+set follow_new   = spawn @config_dir/follow.sh \@< uzbl.follow("\@follow_hints", "%s", 'newwindow') >\@
+set follow_xclip = spawn @config_dir/follow.sh \@< uzbl.follow("\@follow_hints", "%s", 'returnuri') >\@
+set follow_save  = spawn @config_dir/follow.sh \@< uzbl.follow("\@follow_hints", "%s", 'download') >\@
+
+# Copy, download and paste
+# ------------------------
+
+set xcip  = sh 'echo -n "$UZBL_URI" | xclip; echo -n "$UZBL_URI" | xclip -selection clipboard'
+set save  = sh 'echo "download $UZBL_URI" > "$UZBL_FIFO"'
+set paste = sh 'echo "event INJECT_KEYCMD $(xclip -o | sed s/\\\@/%40/g)" > "$UZBL_FIFO"'
+
+# Key bindings
+# ------------
+
+# Only if these keys are "ignored" will characters modified by them
+# become available in the KEYCMD buffer. For some reason this does not
+# actually disable their role in the key bindings below.
+request IGNORE_KEY <Shift>
+request IGNORE_KEY <Mod5>
+request IGNORE_KEY <Mod1>
+
+# Trigger events.
+request MODE_BIND global <Escape>               = event ESCAPE
+
+# Command line.
+request MODE_BIND global,-insert :_             = %s
+request MODE_BIND global,-insert <Return>       = event KEYCMD_EXEC_CURRENT
+request MODE_BIND global,-insert <Left>         = event SET_CURSOR_POS -
+request MODE_BIND global,-insert <Right>        = event SET_CURSOR_POS +
+request MODE_BIND global,-insert <Ctrl><Left>   = event SET_CURSOR_POS 0
+request MODE_BIND global,-insert <Ctrl><Right>  = event SET_CURSOR_POS -1
+request MODE_BIND global,-insert <Delete>       = event KEYCMD_DELETE
+request MODE_BIND global,-insert <BackSpace>    = event KEYCMD_BACKSPACE
+
+# Change to insert mode with i.
+request MODE_BIND command i                     = set mode = insert
+
+# < = back; > = forward; k = stop loading; r = reload; R = force reload.
+request MODE_BIND command <                     = back
+request MODE_BIND command >                     = forward
+request MODE_BIND command k                     = stop
+request MODE_BIND command r                     = reload
+request MODE_BIND command R                     = reload_ign_cache
+
+# Navigate with w/a/s/d, +shift for whole screen.
+request MODE_BIND command w                     = scroll vertical -20
+request MODE_BIND command s                     = scroll vertical 20
+request MODE_BIND command a                     = scroll horizontal -20
+request MODE_BIND command d                     = scroll horizontal 20
+request MODE_BIND command W                     = scroll vertical -100%
+request MODE_BIND command S                     = scroll vertical 100%
+request MODE_BIND command A                     = scroll horizontal -100%
+request MODE_BIND command D                     = scroll horizontal 100%
+
+# -/+: zoom in/out; ä: normalize; Ä: toggle zoom type.
+request MODE_BIND command +                     = zoom_in
+request MODE_BIND command -                     = zoom_out
+request MODE_BIND command ä                     = set zoom_level = 1.0
+request MODE_BIND command Ä                     = toggle zoom_type
+
+# Toggle status bar with f.
+request MODE_BIND command f                     = toggle show_status
+
+# Bindings for follow.js.
+request MODE_BIND command l*                    = @follow
+request MODE_BIND command L*                    = @follow_new
+request MODE_BIND command c*                    = @follow_xclip
+request MODE_BIND command C*                    = @follow_save
+
+# Toggle JavaScript.
+request MODE_BIND command j                     = event TOGGLE_JS
+
+# URI prompt.
+request MODE_BIND command o<uri:>_              = uri %s
+request MODE_BIND command O<uri:\@uri>_         = uri %s
+
+# Copy current URI; paste from clipboard into keycmd at cursor position.
+request MODE_BIND global,-insert <Ctrl>c        = @xclip
+request MODE_BIND global,-insert <Ctrl><Shift>C = @save
+request MODE_BIND global,-insert <Ctrl>v        = @paste

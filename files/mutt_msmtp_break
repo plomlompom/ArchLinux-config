@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# mutt_msmtp_break is to be called during the run of mutt as msmtp's
+# passwordeval command. It stops and backgrounds the calling mutt
+# process, throwing the user back to mutt's parent, which is supposed
+# to be the password prompt loop provided by the other script,
+# mutt_msmtp_loop, from which alone mutt should be called.
+
+# Go up the family tree to get the ID of the originating mutt process.
+ppid=`cat /proc/$$/status | grep PPid | grep -o [0-9]*`
+pppid=`cat /proc/$ppid/status | grep PPid | grep -o [0-9]*`
+ppppid=`cat /proc/$pppid/status | grep PPid | grep -o [0-9]*`
+
+kill -20 $ppppid                  # Suspend mutt process to background.
+
+while [[ 1 ]]                     # Loop until /tmp/mutt_pw appears;
+do                                # when that happens, the mutt process
+  if [[ -f /tmp/mutt_pw ]]        # will be foregrounded and running
+  then                            # again, so the content of mutt_pw
+    pw=`cat /tmp/mutt_pw`         # may be echoed back to its msmtp
+    rm /tmp/mutt_pw               # child (but only, of course, after
+    echo $pw                      # the dangerous /tmp/pw file has
+    exit                          # been deleted).
+  fi                              #
+done

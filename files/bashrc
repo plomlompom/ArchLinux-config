@@ -1,0 +1,21 @@
+# plomlompom's bashrc for non-login shells
+
+# Environment variables.
+export PATH=~/.bin:$PATH
+export EDITOR=nano
+
+# Fancy colors for ls.
+alias ls="ls --color=auto"
+
+# Force these programs to use re-located config files or wrappers.
+# Notice that msmtp does not understand ~ as the home dir, only $HOME.
+alias irssi="irssi --home ~/.config/irssi"
+alias getmail="getmail --getmaildir=~/.config/getmail"
+alias msmtp="msmtp --file=$HOME/.config/msmtp/msmtprc"
+alias mutt="mutt_msmtp_loop"
+
+# Blue prompt with time.
+PS1="\[\e[1;34m\][\\t \\u@\\h \\w]$\[\e[m\] "
+PS2="\[\e[1;34m\]>\[\e[m\] "
+PS3="\[\e[1;34m\]>\[\e[m\] "
+PS4="\[\e[1;34m\]+\[\e[m\] "
