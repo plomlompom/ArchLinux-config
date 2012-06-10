@@ -99,7 +99,7 @@ set follow_save  = spawn @config_dir/follow.sh \@< uzbl.follow("\@follow_hints",
 # Copy, download and paste
 # ------------------------
 
-set xcip  = sh 'echo -n "$UZBL_URI" | xclip; echo -n "$UZBL_URI" | xclip -selection clipboard'
+set xclip = sh 'echo -n "$UZBL_URI" | xclip; echo -n "$UZBL_URI" | xclip -selection clipboard'
 set save  = sh 'echo "download $UZBL_URI" > "$UZBL_FIFO"'
 set paste = sh 'echo "event INJECT_KEYCMD $(xclip -o | sed s/\\\@/%40/g)" > "$UZBL_FIFO"'
 
@@ -145,6 +145,10 @@ request MODE_BIND command W                     = scroll vertical -100%
 request MODE_BIND command S                     = scroll vertical 100%
 request MODE_BIND command A                     = scroll horizontal -100%
 request MODE_BIND command D                     = scroll horizontal 100%
+request MODE_BIND command <Ctrl>w               = scroll vertical begin
+request MODE_BIND command <Ctrl>s               = scroll vertical end
+request MODE_BIND command <Ctrl>a               = scroll horizontal begin
+request MODE_BIND command <Ctrl>d               = scroll horizontal end
 
 # -/+: zoom in/out; ä: normalize; Ä: toggle zoom type.
 request MODE_BIND command +                     = zoom_in
