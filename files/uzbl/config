@@ -62,10 +62,11 @@ set useragent = uzbl (Webkit @{WEBKIT_MAJOR}.@{WEBKIT_MINOR}) (@(+uname -sm)@ [@
 # Events
 # ------
 
-# On ESCAPE: revert to default_mode, clear KEYCMD buffer and follow.js hints.
+# On ESCAPE: revert to default_mode, clear KEYCMD buffer, follow.js hints and search.
 request ON_EVENT ESCAPE set mode = command
 request ON_EVENT ESCAPE event KEYCMD_CLEAR
 request ON_EVENT ESCAPE js uzbl.follow.clearHints()
+request ON_EVENT ESCAPE search_clear
 
 # Return to command mode for each new page load.
 request ON_EVENT LOAD_START set mode = command
