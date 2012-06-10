@@ -48,7 +48,7 @@ set cursor_style = underline = "single"
 # Content of status bar.
 set progress.format = %c
 set status_page_id  = \@[\@uri]\@ <span foreground="#999">\@TITLE</span>
-set status_input    = <span foreground="#ff0">\@mode_indicator\@keycmd_prompt \@keycmd</span>
+set status_input    = <span foreground="#f00">\@mode_indicator\@keycmd_prompt</span> <span foreground="#ff0">\@keycmd</span>
 set content         = \@status_js @status_input \@status_progress @status_page_id
 set status_format   = <span font_size="medium" font_family="monospace" foreground="#fff">@content</span>
 
