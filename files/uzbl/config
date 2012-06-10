@@ -176,3 +176,9 @@ request MODE_BIND command O<uri:\@uri>_         = uri %s
 request MODE_BIND global,-insert <Ctrl>c        = @xclip
 request MODE_BIND global,-insert <Ctrl><Shift>C = @save
 request MODE_BIND global,-insert <Ctrl>v        = @paste
+
+# Search engine shortcuts.
+request MODE_BIND command gg<Google:>_          = uri http://www.google.com/search?q=\@<encodeURIComponent(%r)>\@
+request MODE_BIND command gwe<Wikipedia en:>_   = uri http://en.wikipedia.org/w/index.php?search=\@<encodeURIComponent(%r)>\@
+request MODE_BIND command gwd<Wikipedia de:>_   = uri http://de.wikipedia.org/w/index.php?search=\@<encodeURIComponent(%r)>\@
+request MODE_BIND command gp<PlomWiki:>_        = uri http://www.plomlompom.de/PlomWiki/plomwiki.php?action=Search&query=\@<encodeURIComponent(%r)>\@
