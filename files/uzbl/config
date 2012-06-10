@@ -182,3 +182,4 @@ request MODE_BIND command gg<Google:>_          = uri http://www.google.com/sear
 request MODE_BIND command gwe<Wikipedia en:>_   = uri http://en.wikipedia.org/w/index.php?search=\@<encodeURIComponent(%r)>\@
 request MODE_BIND command gwd<Wikipedia de:>_   = uri http://de.wikipedia.org/w/index.php?search=\@<encodeURIComponent(%r)>\@
 request MODE_BIND command gp<PlomWiki:>_        = uri http://www.plomlompom.de/PlomWiki/plomwiki.php?action=Search&query=\@<encodeURIComponent(%r)>\@
+request MODE_BIND command gt<TvTropes:>_        = uri http://www.google.com/search?q=site%3Atvtropes.org%20\@<encodeURIComponent(%r)>\@
