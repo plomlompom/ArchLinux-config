@@ -4,41 +4,49 @@ MAILDIR=$HOME/.mail
 DEFAULT=$MAILDIR/inbox/
 
 :0
-* ^To: wann-klettern-wir@googlegroups\.com
-ML-klettern/
+* ^To: Bisdahin <termin@bisdahin.de>
+bisdahin/
 
 :0
-* ^From: FetLife <donotreply@fetlifemail\.com>
-fetlife/
-
-:0
-* ^Subject: Logwatch for plomlompom\.com \(Linux\)
-serverlogs/
-
-:0
-* ^From: Twitter 
-twitter/
-
-:0
-* ^Subject: ***SPAM***
-spam-suspect/
+* ^Subject: b-ware ladenkino
+b-ware-ladenkino/
 
 :0
 * ^To: monochrom <monochrom@groups.facebook.com>
 FB-monochrom/
 
 :0
-* ^To: liste-ff-medien@gruene-jugend.de
-ML-gj-medien/
-
-:0
-* ^To: Bisdahin <termin@bisdahin.de>
-bisdahin/
+* ^From: FetLife <donotreply@fetlifemail\.com>
+fetlife/
 
 :0
 * ^From: noreply@statusnetondemand.net
 identica/
 
 :0
-* ^Subject: b-ware ladenkino
-b-ware-ladenkino/
+* ^To .*forum@detrans.de
+ML-detrans/
+
+:0
+* ^To: .*liste-ff-medien@gruene-jugend.de
+ML-gj-medien/
+
+:0
+* ^To: wann-klettern-wir@googlegroups\.com
+ML-klettern/
+
+:0
+* ^To: .*st-berlin@smjg.org
+ML-smjg-berin/
+
+:0
+* ^Subject: Logwatch for plomlompom\.com \(Linux\)
+serverlogs/
+
+:0
+* ^Subject: ***SPAM***
+spam-suspect/
+
+:0
+* ^From: Twitter 
+twitter/
