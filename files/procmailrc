@@ -8,10 +8,6 @@ DEFAULT=$MAILDIR/inbox/
 bisdahin/
 
 :0
-* ^Subject: b-ware ladenkino
-b-ware-ladenkino/
-
-:0
 * ^To: monochrom <monochrom@groups.facebook.com>
 FB-monochrom/
 
@@ -37,7 +33,7 @@ ML-klettern/
 
 :0
 * ^To: .*st-berlin@smjg.org
-ML-smjg-berin/
+ML-smjg-berlin/
 
 :0
 * ^Subject: Logwatch for plomlompom\.com \(Linux\)

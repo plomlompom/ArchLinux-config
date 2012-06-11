@@ -12,6 +12,6 @@ type = MDA_external
 path = /usr/bin/procmail
 arguments = ("-m", "/home/plom/.config/procmail/procmailrc")
 
-# Don't retrieve mail already known to getmail.
+# Delete retrieved mail from server.
 [options]
-read_all = false
+delete = true

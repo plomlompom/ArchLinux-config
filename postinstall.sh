@@ -325,6 +325,18 @@ cp $FILES/mutt_msmtp_loop $MEHOME/.bin/
 
 pacman --noconfirm -S powertop
 
+# Sound
+# -----
+#
+# Set speaker volume to maximum and enable user to play sound by adding
+# him to "audio" group.
+
+pacman --noconfirm -S alsa-utils
+gpasswd -a $ME audio
+amixer set 'Speaker' 100%
+amixer set 'Master' 100%
+alsactl store
+
 # Finishing touches
 # -----------------
 #
