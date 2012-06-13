@@ -7,9 +7,9 @@
 # mutt_msmtp_loop, from which alone mutt should be called.
 
 # Go up the family tree to get the ID of the originating mutt process.
-ppid=`cat /proc/$$/status | grep PPid | grep -o [0-9]*`
-pppid=`cat /proc/$ppid/status | grep PPid | grep -o [0-9]*`
-ppppid=`cat /proc/$pppid/status | grep PPid | grep -o [0-9]*`
+ppid=`cat /proc/$$/status | grep PPid | grep -o '[0-9]*'`
+pppid=`cat /proc/$ppid/status | grep PPid | grep -o '[0-9]*'`
+ppppid=`cat /proc/$pppid/status | grep PPid | grep -o '[0-9]*'`
 
 kill -20 $ppppid                  # Suspend mutt process to background.
 
