@@ -260,8 +260,7 @@ uzbl.follow.findMatchingHintId = function(elems, str) {
 
 uzbl.follow.getInterestingElements = function() {
     var followable  = 'a, area, textarea, select, input:not([type=hidden]), button, *[onclick]';
-    var uri         = 'a, area, frame, iframe, img';
-    //var uri         = 'a, area, frame, iframe';
+    var uri         = 'a, area, frame, iframe';
     //var focusable   = 'a, area, textarea, select, input:not([type=hidden]), button, frame, iframe, applet, object';
     //var desc        = '*[title], img[alt], applet[alt], area[alt], input[alt]';
     //var image       = 'img, input[type=image]';
