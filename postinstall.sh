@@ -339,11 +339,6 @@ alsactl store
 
 # Finishing touches
 # -----------------
-#
-# Update man pages database.
-
-mandb -q
-
 # Change ownership of files created in user home directory to user.
 
 chown -R $ME:$ME $MEHOME
@@ -351,6 +346,10 @@ chown -R $ME:$ME $MEHOME
 # Make all files in ~/.bin/ executable.
 
 chmod u+x $MEHOME/.bin/*
+
+# Update man pages database.
+
+mandb -q
 
 # Re-start for clean re-configuration of environment.
 
