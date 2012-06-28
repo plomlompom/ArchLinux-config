@@ -333,8 +333,8 @@ pacman --noconfirm -S powertop
 
 pacman --noconfirm -S alsa-utils
 gpasswd -a $ME audio
-amixer set 'Speaker' 100%
-amixer set 'Master' 100%
+amixer set 'Speaker' 100% unmute
+amixer set 'Master' 100% unmute
 alsactl store
 
 # Finishing touches
