@@ -8,8 +8,8 @@ DEFAULT=$MAILDIR/inbox/
 bisdahin/
 
 :0
-* ^To: monochrom <monochrom@groups.facebook.com>
-FB-monochrom/
+* ^From: Doodle <mailer@doodle.com>
+doodle/
 
 :0
 * ^From: FetLife <donotreply@fetlifemail\.com>
@@ -22,6 +22,10 @@ flattr/
 :0
 * ^From: noreply@statusnetondemand.net
 identica/
+
+:0
+* ^From: .*@linkedin\.com
+linkedin/
 
 :0
 * ^To .*forum@detrans.de
