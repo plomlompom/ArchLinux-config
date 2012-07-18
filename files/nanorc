@@ -28,3 +28,5 @@ set undo
 # Some key bindings: move cursor left/right one word with CTRL+a/d.
 bind ^a prevword main
 bind ^d nextword main
+
+include "/usr/share/nano/c.nanorc"
