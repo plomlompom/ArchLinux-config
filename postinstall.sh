@@ -79,7 +79,9 @@ echo 'export LESSHISTFILE=-' >> /etc/profile
 # ------------------------------------
 #
 # Create normal user; make sure the home directory starts clutter-free.
+# But first we need the shadow package for "useradd".
 
+pacman --noconfirm -S shadow
 useradd -m $ME
 rm $MEHOME/.*
 
