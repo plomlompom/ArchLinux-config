@@ -7,15 +7,10 @@
 # ----------------
 #
 # This shell script may be executed directly by root, or be used as a
-# text guide to configure Arch Linux step-by-step post-installation. It
-# originates from a series of wiki pages to record my post-install
-# configuration with explanatory remarks, a complete listing of shell
-# commands and config file texts -- the major difference is that
-# non-code text is put into comment lines, file contents are outsourced
-# to external files and all command lines are executed directly as root
-# (commands to be executed by non-root are called by root via sudo).
-#              -- plomlompom / Christian Heller <c.heller@plomlompom.de>
-#
+# text guide to configure Arch Linux step-by-step post-installation.
+# It assumes previous installation of the following Arch Linux packages
+# and their dependencies: dhcpcd, grub, initscripts, linux, pacman.
+# 
 # Some constants for this script:
 
 FILES=./files
