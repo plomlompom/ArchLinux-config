@@ -18,7 +18,7 @@
 #
 # Some constants for this script:
 
-FILES=/root/postinstall/files
+FILES=./files
 ME=plom
 MEHOME=/home/$ME
 
