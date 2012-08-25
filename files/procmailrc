@@ -28,7 +28,7 @@ identica/
 linkedin/
 
 :0
-* ^To .*forum@detrans.de.*
+* ^To: .*forum@detrans.de
 ML-detrans/
 
 :0
