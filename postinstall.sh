@@ -131,11 +131,9 @@ mkdir $MEHOME/.nano_backups
 # X11 window system
 # -----------------
 #
-# I want fancy non-ASCII graphics, so I need X11. The following
-# packages are needed for my system (other systems' users may drop
-# "xf86-video-intel" and possibly replace it with something else):
+# I want fancy non-ASCII graphics; I need X11 and some drivers for it.
 
-pacman --noconfirm -S xorg-server xorg-xinit xf86-video-intel
+pacman --noconfirm -S xorg-server xorg-xinit xf86-video-intel xf86-input-synaptics
 
 # X configuration can be daunting, but I want to keep my config as
 # as simple as possible, therefore I replace the X11 config directory
