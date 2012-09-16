@@ -182,8 +182,9 @@ request MODE_BIND global,-insert <Ctrl>v        = @paste
 request MODE_BIND command gg<Google:>_          = uri http://www.google.com/search?q=\@<encodeURIComponent(%r)>\@
 request MODE_BIND command gwe<Wikipedia en:>_   = uri http://en.wikipedia.org/w/index.php?search=\@<encodeURIComponent(%r)>\@
 request MODE_BIND command gwd<Wikipedia de:>_   = uri http://de.wikipedia.org/w/index.php?search=\@<encodeURIComponent(%r)>\@
-request MODE_BIND command gp<PlomWiki:>_        = uri http://www.plomlompom.de/PlomWiki/plomwiki.php?action=Search&query=\@<encodeURIComponent(%r)>\@
+request MODE_BIND command gp<PlomWiki search:>_ = uri http://www.plomlompom.de/PlomWiki/plomwiki.php?action=Search&query=\@<encodeURIComponent(%r)>\@
 request MODE_BIND command gt<TvTropes:>_        = uri http://www.google.com/search?q=site%3Atvtropes.org%20\@<encodeURIComponent(%r)>\@
+request MODE_BIND command p<PlomWiki page:>_    = uri http://www.plomlompom.de/PlomWiki/plomwiki.php?title=\@<encodeURIComponent(%r)>\@
 
 # Page search.
 request MODE_BIND command /*                    = search %s
