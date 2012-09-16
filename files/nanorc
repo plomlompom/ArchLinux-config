@@ -12,9 +12,8 @@ set const
 set morespace
 set nohelp
 
-# Don't start a new line when the right side of screen is reached. Use
-# "softwrap" instead to break lines only in display, not in file.
-set nowrap
+# Break lines only in display, not in file.
+set softwrap
 
 # Scroll line by line, not half-screen by half-screen.
 set smooth
