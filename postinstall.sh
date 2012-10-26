@@ -11,28 +11,64 @@
 # It assumes previous installation of the following Arch Linux packages
 # and their dependencies: dhcpcd, grub, initscripts, linux, pacman.
 # 
+# Write out all commands to stderr.
+
+set -x
+ 
 # Some constants for this script:
 
 FILES=./files
 ME=plom
 MEHOME=/home/$ME
+MAILDIR=/data/mail
 
 # General first steps
 # ===================
 #
+# Preliminary filesystem manipulations
+# ------------------------------------
+#
+# Just booted my newly installed Arch Linux for the first time. I login
+# as root. I do some urgent filesystem manipulations.
+#
+# First, clean up /etc/fstab as per recommendation from Arch Linux
+# installation guide.
+
+cat /etc/fstab | sed s/,data=ordered// > temp
+mv temp /etc/fstab
+
+# Inaugurate /dev/sda4 as /data. For its fstab entry, copy the root
+# partition configuration
+
+mkdir /data
+mount /dev/sda4 /data
+cat /etc/fstab > temp
+cat /etc/fstab | grep '/ ' | sed 's@/dev/sda[23]@/dev/sda4@' | sed 's@/ @/data@' >> temp
+mv temp /etc/fstab
+
+# Next, localize keymap and timezone.
+
+echo 'KEYMAP=de-latin1-nodeadkeys' > /etc/vconsole.conf
+ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+
+# Set hostname and reflect change in /etc/hosts.
+
+echo 'plom-eee' > /etc/hostname
+cat /etc/hosts | sed 's/localhost.localdomain/plom-eee/g' > temp
+mv temp /etc/hosts
+
+# Configure systemd to not clear screen after boot process.
+
+cat /etc/systemd/system/getty.target.wants/getty\@tty1.service | sed 's/^TTYVTDisallocate=yes$/TTYVTDisallocate=no/' > temp
+mv temp /etc/systemd/system/getty.target.wants/getty\@tty1.service
+
 # Package management initialization
 # ---------------------------------
 # 
-# Just booted my newly installed Arch Linux for the first time. I login
-# as root. I establish an internet connection, upgrade the system via
-# pacman and optimize its mirror list via "reflector".
+# I establish an internet connection and  upgrade the system via pacman.
 
 dhcpcd eth0
-cp $FILES/pacman.conf /etc/
 pacman --noconfirm -Syyu
-pacman --noconfirm -S reflector 
-reflector -l 10 --sort rate --save /etc/pacman.d/mirrorlist 
-pacman --noconfirm -Rsn reflector 
 
 # Notice that I used the --noconfirm option on pacman. This is only for
 # purposes of execution via a script. If you follow this script as a
@@ -51,7 +87,7 @@ pacman --noconfirm -Rsn reflector
 
 echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen 
 locale-gen 
-echo 'LOCALE="en_US.UTF-8"' >> /etc/rc.conf
+echo LANG=en_US.UTF-8 > /etc/locale.conf
 
 # I chose an "en_" locale for the googling reason described above; the
 # "US" part only matters for some special cases that I don't care much
@@ -74,9 +110,7 @@ echo 'export LESSHISTFILE=-' >> /etc/profile
 # ------------------------------------
 #
 # Create normal user; make sure the home directory starts clutter-free.
-# But first we need the shadow package for "useradd".
 
-pacman --noconfirm -S shadow
 useradd -m $ME
 rm $MEHOME/.*
 
@@ -214,11 +248,6 @@ pacman --noconfirm -S getmail
 mkdir $MEHOME/.config/getmail
 cp $FILES/getmailrc $MEHOME/.config/getmail/
 
-# Mail is to be stored in a Maildir ~/mail directory that needs to be
-# set up properly before getmail can use it:
-
-mkdir -p $MEHOME/.mail/inbox/{tmp,new,cur}  
-
 # Apart from the inbox, different types of messages are to go directly
 # into appropriate mail boxes (for mailing lists etc.), a filtering to
 # be performed by "procmail":
@@ -227,15 +256,18 @@ pacman --noconfirm -S procmail
 mkdir $MEHOME/.config/procmail
 cp $FILES/procmailrc $MEHOME/.config/procmail/
 
-# I need to set up these alternative mailboxes' directories, too. What
-# directories exactly is determined from the filters named in the
-# procmailrc, from which directory names are translated to existing
-# directories via some shell magic:
+# Mail is to be stored in Maildir ~/mail directories that needs to be
+# set up properly before getmail can use it. Apart from the main inbox
+# directories, others are expected by procmailrc; their directories are
+# built from procmailrc via some shell magic: 
 
-mboxes=`cat $FILES/procmailrc | grep -E '^[0-9A-Za-z-]+/$' | tr -s "/\n" "," | rev | cut -c 2- | rev`
-echo "mkdir -p $MEHOME/.mail/{$mboxes}/{tmp,new,cur}" > /tmp/mboxes
-bash /tmp/mboxes
-rm /tmp/mboxes
+if [ ! -d $MAILDIR ]; then
+  mkdir -p $MAILDIR/inbox/{tmp,new,cur}  
+  mboxes=`cat $FILES/procmailrc | grep -E '^[0-9A-Za-z-]+/$' | tr -s "/\n" "," | rev | cut -c 2- | rev`
+  echo "mkdir -p $MAILDIR/{$mboxes}/{tmp,new,cur}" > /tmp/mboxes
+  bash /tmp/mboxes
+  rm /tmp/mboxes
+fi
 
 # Now on to a message transfer agent, "msmtp". Notice the chmod 600 for
 # the msmtprc: msmtp refuses to start if it has more permissions set.
@@ -329,14 +361,46 @@ pacman --noconfirm -S powertop
 pacman --noconfirm -S alsa-utils
 gpasswd -a $ME audio
 amixer set 'Speaker' 100% unmute
-amixer set 'Master' 100% unmute
+amixer set 'Master' 50% unmute
 alsactl store
+
+# pinpoint
+# --------
+#
+# Pinpoint is a simple presentation tool that is only available via AUR
+# -- which makes the installation a little complicated.
+#
+# First, get some stuff needed for the build environment.
+
+pacman --noconfirm -S base-devel sudo git tar
+
+# Next, files and dependencies for pinpoint itself.
+
+pacman --noconfirm -S clutter clutter-gst glproto dri2proto
+curl http://aur.archlinux.org/packages/pi/pinpoint-git/pinpoint-git.tar.gz > $MEHOME/pinpoint-git.tar.gz
+
+# Build everything in the user directory, since makepkg run as root is
+# not recommended.
+
+tar xzf $MEHOME/pinpoint-git.tar.gz -C $MEHOME/
+chown $ME:$ME $MEHOME/pinpoint-git
+cd $MEHOME/pinpoint-git
+sudo -u $ME makepkg
+cd
+
+# Finally, install pinpoint and remove unneeded stuff.
+
+pacman --noconfirm -U $MEHOME/pinpoint-git/pinpoint-git-*
+rm -rf $MEHOME/pinpoint-git $MEHOME/pinpoint-git.tar.gz
+pacman --noconfirm -Rsn base-devel sudo git tar
 
 # Finishing touches
 # -----------------
-# Change ownership of files created in user home directory to user.
+# 
+# Change ownership of files created in user home directory and mail
+# directory to user.
 
-chown -R $ME:$ME $MEHOME
+chown -R $ME:$ME $MEHOME $MAILDIR
 
 # Make all files in ~/.bin/ executable.
 
@@ -348,4 +412,4 @@ mandb -q
 
 # Re-start for clean re-configuration of environment.
 
-reboot
+systemctl reboot

@@ -1,6 +1,6 @@
 # plomlompom's procmail configuration
 
-MAILDIR=$HOME/.mail
+MAILDIR=/data/mail
 DEFAULT=$MAILDIR/inbox/
 
 :0

@@ -2,7 +2,7 @@
 
 # Define mailboxes.
 set mbox_type=Maildir
-set folder=~/.mail
+set folder=/data/mail
 set spoolfile=$folder/inbox
 set mbox=$folder/archive
 set record=$folder/sent
@@ -13,7 +13,7 @@ set move=yes
 
 # Macro to a mailboxes view built from all folders below ~/mail.
 macro index,pager y <change-folder>?<toggle-mailboxes>
-mailboxes `ls ~/.mail | sed -e 's/^/=/' | tr "\n" " "`
+mailboxes `ls /data/mail | sed -e 's/^/=/' | tr "\n" " "`
 
 # What goes into the default header display.
 ignore *
